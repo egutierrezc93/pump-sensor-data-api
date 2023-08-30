@@ -1,6 +1,5 @@
 from flask import Request, Response, jsonify
 import pandas as pd
-import json
 
 class SensorDataService():
 
