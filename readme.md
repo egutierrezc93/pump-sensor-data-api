@@ -15,6 +15,8 @@ The sensor.csv file can be downloaded from https://www.kaggle.com/datasets/nphan
    `pip install -r requirements.txt`
 2. Start the flask server
    `flask run`
+3. The server will start in 
+   `http://127.0.0.1:5000`
 
 ------------------------------------------------------------------------------------------
 
