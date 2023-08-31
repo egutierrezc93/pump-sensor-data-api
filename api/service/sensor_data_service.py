@@ -1,6 +1,8 @@
 from flask import Request, Response, jsonify
 import pandas as pd
 
+from configuration.configuration import Configuration
+
 class SensorDataService():
     """
     Sensor Data Service
@@ -33,10 +35,13 @@ class SensorDataService():
         self.request = request
 
     def __read_data_from_csv__(self) -> pd.DataFrame:
-        raw_data:pd.DataFrame = pd.read_csv('./resources/sensor.csv')
+        raw_data:pd.DataFrame = pd.read_csv(Configuration.sensor_data_csv_path)
         return raw_data
     
-    def __filter_by_date__(self, df:pd.DataFrame, year:str='2018', month:str='04') -> pd.DataFrame:
+    def __filter_by_date__(self, 
+                           df:pd.DataFrame, 
+                           year:str=Configuration.year_filter, 
+                           month:str=Configuration.month_filter) -> pd.DataFrame:
         sensor_df:pd.DataFrame = df.copy()
         sensor_df.timestamp = pd.to_datetime(sensor_df.timestamp)
         sensor_df['date'] = sensor_df.timestamp.dt.strftime('%Y-%m-%d')
@@ -44,7 +49,11 @@ class SensorDataService():
         filtered_df = sensor_df.loc[sensor_df.date.str.startswith(year + '-' + month)]
         return filtered_df
     
-    def __filter_sensor_data__(self, df:pd.DataFrame, sensor:str, min:int=20, max:int=30) -> pd.DataFrame:
+    def __filter_sensor_data__(self, 
+                               df:pd.DataFrame, 
+                               sensor:str, 
+                               min:int=Configuration.min_threshold, 
+                               max:int=Configuration.max_threshold) -> pd.DataFrame:
         filtered_df:pd.DataFrame = df[['date', 'time', sensor, 'machine_status']]
         filtered_df = filtered_df.loc[filtered_df[sensor] < max]
         filtered_df = filtered_df.loc[filtered_df[sensor] > min]
@@ -55,7 +64,8 @@ class SensorDataService():
     def __get_filtered_sensors_data__(self, df:pd.DataFrame) -> dict:
         sensor_07_filtered_df:pd.DataFrame = self.__filter_sensor_data__(df, sensor='sensor_07')
         sensor_47_filtered_df:pd.DataFrame = self.__filter_sensor_data__(df, sensor='sensor_47')
-        filtered_sensor_data_df:pd.DataFrame = pd.concat([sensor_07_filtered_df, sensor_47_filtered_df])
+        filtered_sensor_data_df:pd.DataFrame = pd.concat([sensor_07_filtered_df, 
+                                                          sensor_47_filtered_df])
         return filtered_sensor_data_df.to_dict('records')
 
     def get_filtered_sensor_data(self) -> Response:
@@ -77,7 +87,8 @@ class SensorDataService():
                 print(input_df)
                 return {"message": "ok"}, 200
             except Exception as error:
-                print('An exception ocurred in SensorDataService.print_sensor_data_as_dataframe', error)
+                print('An exception ocurred in SensorDataService.print_sensor_data_as_dataframe', 
+                      error)
                 return {"message": "Internal Server Error"}, 500
         else:
             return {"message": "There is no body in the request"}, 400
