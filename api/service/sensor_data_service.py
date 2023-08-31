@@ -2,6 +2,30 @@ from flask import Request, Response, jsonify
 import pandas as pd
 
 class SensorDataService():
+    """
+    Sensor Data Service
+    Class that is in charge of implement all the challenge logic
+
+    "Private" methods
+    * __init__: constructor method, in charge of initialize the flask.request variable 
+    * __read_data_from_csv__: Method for load in memory the sensor data .csv and return 
+                              it as a pandas dataframe
+    * __filter_by_date__: Method that get a pandas dataframe and split the timestamp column
+                         into date and time columns and filter this columns for a year and 
+                         a month
+    * __filter_sensor_data__: This method implements the logic for getting only the sensor data
+                              in a dataframe and filter it for measures that are < than a min
+                              and > than a max thresholds
+    * __get_filtered_sensors_data__: Method that get the filtered data for the sensor_07 and 
+                                     sensor_47, and concatenate the two dataframes
+
+    Public methods
+    * get_filtered_sensor_data: Method that orquestrate the challenge first endpoint logic
+                                and manage the endpoint response, managing posible exceptions
+    * print_sensor_data_as_dataframe: Method that has the challenge second endpoint logic
+                                      and manage the endpoint response, managing posible exceptions
+    ---
+    """
 
     request:Request
 
@@ -17,7 +41,7 @@ class SensorDataService():
         sensor_df.timestamp = pd.to_datetime(sensor_df.timestamp)
         sensor_df['date'] = sensor_df.timestamp.dt.strftime('%Y-%m-%d')
         sensor_df['time'] = sensor_df.timestamp.dt.strftime('%H:%M:%S')
-        filtered_df = sensor_df.loc[sensor_df.date.str.startswith('2018-04')]
+        filtered_df = sensor_df.loc[sensor_df.date.str.startswith(year + '-' + month)]
         return filtered_df
     
     def __filter_sensor_data__(self, df:pd.DataFrame, sensor:str, min:int=20, max:int=30) -> pd.DataFrame:
