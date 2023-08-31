@@ -42,14 +42,14 @@ The sensor.csv file can be downloaded from https://www.kaggle.com/datasets/nphan
 
  ##### Description
  Sensor Data GET endpoint
- 
-    In this endpoint the dataset is loaded, filtered and filtered data is send in the response
-    as a Json
 
-    Filter criteria
-    - Only data of april 2018
-    - Only 07 and 47 sensors data
-    - Only sensor measurements > 20 and < 30
+   In this endpoint the dataset is loaded, filtered and filtered data is send in the response
+   as a Json
+
+   Filter criteria
+   - Only data of april 2018
+   - Only 07 and 47 sensors data
+   - Only sensor measurements > 20 and < 30
  ##### Endpoint Responses
 
  > | http code   | content-type          | response                                 |
@@ -80,7 +80,7 @@ The sensor.csv file can be downloaded from https://www.kaggle.com/datasets/nphan
  ##### Description
  Sensor Data POST endpoint
 
-    In this endpoint a json with sensor data is recieved in the same format of the GET endpoint, the json sensor data is converted to a pandas Dataframe and printed in console
+   In this endpoint a json with sensor data is recieved in the same format of the GET endpoint, the json sensor data is converted to a pandas Dataframe and printed in console
 
 ##### Example Body
  ```json
