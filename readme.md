@@ -49,14 +49,14 @@ The sensor.csv file can be downloaded from https://www.kaggle.com/datasets/nphan
     - Only data of april 2018
     - Only 07 and 47 sensors data
     - Only sensor measurements > 20 and < 30
- ##### example Responses
+ ##### Endpoint Responses
 
  > | http code   | content-type          | response                                 |
  > |-------------|-----------------------|------------------------------------------|
  > | `200`       | `application/json`    | `json object `                           |
  > | `500`       | `application/json`    |` {"message": "Internal Server Error"}`   |
  
- ##### example Responses
+ ##### Example Response
  ```json
  [
    {
@@ -95,7 +95,7 @@ The sensor.csv file can be downloaded from https://www.kaggle.com/datasets/nphan
  ```
  
  
- ##### example Responses
+ ##### Responses
 
  > | http code   | content-type          | response                                 |
  > |-------------|-----------------------|------------------------------------------|
