@@ -44,3 +44,16 @@ class SensorDataService():
         except Exception as error:
             print('An exception ocurred in SensorDataService.get_filtered_sensor_data', error)
             return {"message": "Internal Server Error"}, 500
+        
+    def print_sensor_data_as_dataframe(self) -> Response:
+        if (self.request.data):
+            try:
+                data:list = self.request.get_json()
+                input_df = pd.DataFrame(data)
+                print(input_df)
+                return {"message": "ok"}, 200
+            except Exception as error:
+                print('An exception ocurred in SensorDataService.print_sensor_data_as_dataframe', error)
+                return {"message": "Internal Server Error"}, 500
+        else:
+            return {"message": "There is no body in the request"}, 400
